@@ -31,6 +31,8 @@ class Crawler:
     images: list[str]
     content: str
 
+
+    @classmethod
     def __init__(self, url: str) -> None:
         self.url = url
 
@@ -65,3 +67,9 @@ class Crawler:
         images = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', self.content)
         images = [image.split("/")[-1] for image in images]
         self.images = images
+   
+   
+
+        
+
+
