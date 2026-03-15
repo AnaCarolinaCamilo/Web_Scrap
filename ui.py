@@ -5,21 +5,14 @@ from bs4 import BeautifulSoup
 import re
 
 
-link = str(input('Insira um link sobre o tópico: ')) # recebendo user input 
-padrao = r"https:/pt.wikipedia.org/wiki/\w+" # padrão dos links 
+def request_user_link() -> str | None:
+    link = str(input("Insira um link sobre o tópico: "))
+    padrao = r"https:/pt.wikipedia.org/wiki/\w+"
 
-if bool(re.fullmatch(padrao,link)): # se o link for válido
-    print("Link válido")
-    def get_user_link():
+    if bool(re.fullmatch(padrao, link)):
+        print("Link válido")
+
         return link
 
-else: # se não for
-    print("Link inválido")
-
-
-
-
-
-
-
-
+    else:
+        print("Link inválido")

@@ -1,7 +1,7 @@
 # Objetivos do projeto:
 
 # Primeira parte:
-# Perguntar ao usuário qual link do artigo que ele deseja analisar 
+# Perguntar ao usuário qual link do artigo que ele deseja analisar
 # utilizando expressões regulares verificar se o link é válido ou não
 # verificar se pertence ou não ao domínio pt.wikipedia.org
 
@@ -19,51 +19,66 @@
 
 
 # importando bibliotecas
-from ui import get_user_link
 import requests
 from bs4 import BeautifulSoup
 import re
 
 
-res = requests.get(get_user_link)
-soup = BeautifulSoup(res.content,"html.parser")
-print(f"Scrapping: {get_user_link}")
-print(res)
+class Crawler:
+    url: str
+    indexes: list[str]
+    links: list[str]
+
+    def __init__(self, url: str) -> None:
+        self.url = url
+        self.indexes = []
+        self.links = []
+
+    def craw(self) -> None:
+        headers = {
+            # https://phabricator.wikimedia.org/T400119
+            "User-Agent": "CoolBot/0.0 (https://example.org/coolbot/; coolbot@example.org) generic-library/0.0"
+        }
+
+        response = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(response.content, "html.parser")
+
+        print(f"crawling {self.url}...")
+
+        names = re.findall(
+            r'<span class="vector-toc-numb">\d+</span>\s*<span>(.*?)</span>',
+            str(soup),
+            flags=re.DOTALL,
+        )
+        self.indexes = names
+
+        None
+
 
 # listando os tópicos do índice do artigo
-
-artigo_indices = re.findall(r'<div+?class="/^[a-zA-Z0-9_-]+$/+toc+/^[a-zA-Z0-9_-]+$/"',soup)
-
-nome_indices = []
-
-for indices in artigo_indices:
-
-    nome = re.findall(r'<div.+?class="vector-toc-text".+?span.+?</div>',indices)
-
-    nome_indices.append(nome)
-
-# listando todos os links para outros artigos do wit=kipedia 
-
-artigo_links = re.findall(r'<a.+?/^[a-zA-Z0-9_-]+$/ href"/^[a-zA-Z0-9_-]+$/" title="/^[a-zA-Z0-9_-]+$/">/^[a-zA-Z0-9_-]+$/</a>',soup)
-# para conseguir links válidos é necessário pergar o href e inserir em um padrão "https://pt.wikipedia.org"
-for link in artigo_links:
-    if link['href'].find("/wiki/") == -1:
-        continue
-    link = "https://pt.wikipedia.org"+link['href']
-    break
-
-print(link)
-
-# listando todos as imagens presentes no artigo 
-
-        
-
-
-
-           
-    
-
-
-
-
-
+# artigo_indices = re.findall(
+#     r'<div+?class="/^[a-zA-Z0-9_-]+$/+toc+/^[a-zA-Z0-9_-]+$/"', soup
+# )
+#
+# nome_indices = []
+#
+# for indices in artigo_indices:
+#     nome = re.findall(r'<div.+?class="vector-toc-text".+?span.+?</div>', indices)
+#
+#     nome_indices.append(nome)
+#
+# # listando todos os links para outros artigos do wit=kipedia
+# artigo_links = re.findall(
+#     r'<a.+?/^[a-zA-Z0-9_-]+$/ href"/^[a-zA-Z0-9_-]+$/" title="/^[a-zA-Z0-9_-]+$/">/^[a-zA-Z0-9_-]+$/</a>',
+#     soup,
+# )
+# # para conseguir links válidos é necessário pergar o href e inserir em um padrão "https://pt.wikipedia.org"
+# for link in artigo_links:
+#     if link["href"].find("/wiki/") == -1:
+#         continue
+#     link = "https://pt.wikipedia.org" + link["href"]
+#     break
+#
+# print(link)
+#
+# # listando todos as imagens presentes no artigo
