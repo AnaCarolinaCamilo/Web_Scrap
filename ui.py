@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 import re
 from scrapper import Crawler
 
-
+# função de verificação do link do usuário
 def request_user_link() -> str | None:
     link = str(input("Insira um link sobre o tópico: "))
-    padrao = r"^https?:\/\/(?:[a-zA-Z]{2,3}\.)?wikipedia\.org\/wiki\/[^ ]*$"
+    padrao = r"^https?:\/\/(?:[a-zA-Z]{2,3}\.)?pt\.wikipedia\.org\/wiki\/[^ ]*$"
 
 
     if bool(re.fullmatch(padrao, link)):
@@ -19,12 +19,12 @@ def request_user_link() -> str | None:
     else:
         print("\nLink inválido")
         exit()
-
+# iniciação da classe
 user_scrapping = Crawler(request_user_link())
+# processo de adiquirir o conteúdo da página
 user_scrapping.craw()
 
-print(len(user_scrapping.links))
-
+# menu de operações para o usuário
 print("""
       ----- Menu para as operações ----
       Digite 1 para ver os tópicos do artigo
@@ -47,6 +47,9 @@ while True:
     elif opr == 3:
         print("\n")
         print(user_scrapping.images)
+    elif opr == 4:
+        print("\n")
+        print(user_scrapping.text)
     elif opr == 0:
         print("\n")
         print("Operação encerrada!")
