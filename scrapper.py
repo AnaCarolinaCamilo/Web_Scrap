@@ -65,32 +65,3 @@ class Crawler:
         images = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', self.content)
         images = [image.split("/")[-1] for image in images]
         self.images = images
-
-
-# listando os tópicos do índice do artigo
-# artigo_indices = re.findall(
-#     r'<div+?class="/^[a-zA-Z0-9_-]+$/+toc+/^[a-zA-Z0-9_-]+$/"', soup
-# )
-#
-# nome_indices = []
-#
-# for indices in artigo_indices:
-#     nome = re.findall(r'<div.+?class="vector-toc-text".+?span.+?</div>', indices)
-#
-#     nome_indices.append(nome)
-#
-# # listando todos os links para outros artigos do wit=kipedia
-# artigo_links = re.findall(
-#     r'<a.+?/^[a-zA-Z0-9_-]+$/ href"/^[a-zA-Z0-9_-]+$/" title="/^[a-zA-Z0-9_-]+$/">/^[a-zA-Z0-9_-]+$/</a>',
-#     soup,
-# )
-# # para conseguir links válidos é necessário pergar o href e inserir em um padrão "https://pt.wikipedia.org"
-# for link in artigo_links:
-#     if link["href"].find("/wiki/") == -1:
-#         continue
-#     link = "https://pt.wikipedia.org" + link["href"]
-#     break
-#
-# print(link)
-#
-# # listando todos as imagens presentes no artigo
