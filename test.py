@@ -15,3 +15,5 @@ def test_get_movie():
         "Trilha sonora",
         "Referências",
     ]
+
+    assert len(crawler.links) == 127

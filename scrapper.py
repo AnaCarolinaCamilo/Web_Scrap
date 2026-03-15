@@ -28,6 +28,7 @@ class Crawler:
     url: str
     indexes: list[str]
     links: list[str]
+    content: str
 
     def __init__(self, url: str) -> None:
         self.url = url
@@ -42,17 +43,26 @@ class Crawler:
 
         response = requests.get(self.url, headers=headers)
         soup = BeautifulSoup(response.content, "html.parser")
-
+        self.content = str(soup)
         print(f"crawling {self.url}...")
 
+        self.__craw_indexes()
+        self.__craw_links()
+
+        None
+
+    def __craw_indexes(self) -> None:
         names = re.findall(
             r'<span class="vector-toc-numb">\d+</span>\s*<span>(.*?)</span>',
-            str(soup),
+            self.content,
             flags=re.DOTALL,
         )
         self.indexes = names
 
-        None
+    def __craw_links(self) -> None:
+        tags = re.findall(r'<a[^>]+href=["\'](/wiki/[^"\']+)["\'][^>]*>', self.content)
+        self.links = ["https://pt.wikipedia.org" + tag for tag in tags]
+        print(self.links)
 
 
 # listando os tópicos do índice do artigo
