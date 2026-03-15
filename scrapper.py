@@ -28,12 +28,11 @@ class Crawler:
     url: str
     indexes: list[str]
     links: list[str]
+    images: list[str]
     content: str
 
     def __init__(self, url: str) -> None:
         self.url = url
-        self.indexes = []
-        self.links = []
 
     def craw(self) -> None:
         headers = {
@@ -48,8 +47,7 @@ class Crawler:
 
         self.__craw_indexes()
         self.__craw_links()
-
-        None
+        self.__craw_images()
 
     def __craw_indexes(self) -> None:
         names = re.findall(
@@ -62,7 +60,11 @@ class Crawler:
     def __craw_links(self) -> None:
         tags = re.findall(r'<a[^>]+href=["\'](/wiki/[^"\']+)["\'][^>]*>', self.content)
         self.links = ["https://pt.wikipedia.org" + tag for tag in tags]
-        print(self.links)
+
+    def __craw_images(self) -> None:
+        images = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', self.content)
+        images = [image.split("/")[-1] for image in images]
+        self.images = images
 
 
 # listando os tópicos do índice do artigo
